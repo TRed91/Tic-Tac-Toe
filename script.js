@@ -21,11 +21,13 @@ const gameboard = (function() {
 })();
 
 function generatePlayer(name, symbol){
+
     const playerName = name;
     const playerSymbol = symbol;
     let score = 0;
     const getScore = () => score;
     const win = () => score++;
+
     return {name: playerName, symbol: playerSymbol, getScore, win}
 }
 
@@ -38,11 +40,65 @@ const gameControl = (function(){
         const countO = gameboard.getBoard().filter(e => e === "O").length;
         const countX = gameboard.getBoard().filter(e => e === "X").length;
         if (countO <= countX) {
-            return gameboard.p1DrawBoard();
+            gameboard.p1DrawBoard();
         } else {
-            return gameboard.p2DrawBoard();
+            gameboard.p2DrawBoard();
         }
+        console.log(gameboard.getBoard());
+        return gameControl.winCondition();
     };
-    return {startGame, play};
+    const winCondition = () => {
+        let board = gameboard.getBoard();
+        if ((board[0] === board[1] && board[0] === board[2] && board[0] !== "") ||
+            (board[0] === board[3] && board[0] === board[6] && board[0] !== "") ||
+            (board[0] === board[4] && board[0] === board[8] && board[0] !== "")){
+                if (board[0] === "O"){
+                    playerOne.win()
+                    return alert(`${playerOne.name} wins!`);
+                } else {
+                    playerTwo.win();
+                    return alert(`${playerTwo.name} wins!`);
+                }
+            } else if ((board[1] === board[4] && board[1] === board[7] && board[1] !== "")){
+                if (board[1] === "O"){
+                    playerOne.win()
+                    return alert(`${playerOne.name} wins!`);
+                } else {
+                    playerTwo.win();
+                    return alert(`${playerTwo.name} wins!`);
+                }
+            } else if ((board[3] === board[4] && board[3] === board[5] && board[3] !== "")){
+                if (board[3] === "O"){
+                    playerOne.win()
+                    return alert(`${playerOne.name} wins!`);
+                } else {
+                    playerTwo.win();
+                    return alert(`${playerTwo.name} wins!`);
+                }
+            } else if ((board[2] === board[5] && board[2] === board[8] && board[2] !== "") ||
+                       (board[2] === board[4] && board[2] === board[6] && board[2] !== "")){
+                        if (board[2] === "O"){
+                            playerOne.win()
+                            return alert(`${playerOne.name} wins!`);
+                        } else {
+                            playerTwo.win();
+                            return alert(`${playerTwo.name} wins!`);
+                        }
+            } else if ((board[6] === board[7] && board[6] === board[8] && board[6] !== "")){
+                if (board[6] === "O"){
+                    playerOne.win()
+                    return alert(`${playerOne.name} wins!`);
+                } else {
+                    playerTwo.win();
+                    return alert(`${playerTwo.name} wins!`);
+                }
+            } else {
+                gameControl.play();
+            }
+                        
+            
+        
+    };
+    return {startGame, play, winCondition};
 })();
 
