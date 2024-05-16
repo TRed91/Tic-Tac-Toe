@@ -70,6 +70,7 @@ const gameControl = (function(){
     };
     const winCondition = () => {
         let board = gameboard.getBoard();
+        let checkDraw = gameboard.getBoard().filter(e => e === "").length;
         if ((board[0] === board[1] && board[0] === board[2] && board[0] !== "") ||
             (board[0] === board[3] && board[0] === board[6] && board[0] !== "") ||
             (board[0] === board[4] && board[0] === board[8] && board[0] !== "")){
@@ -123,6 +124,9 @@ const gameControl = (function(){
                     gameboard.resetBoard();
                     return alert(`${playerTwo.name} wins!`);
                 }
+            } else if (checkDraw === 0){
+                gameboard.resetBoard();
+                return alert("It's a tie!")
             } else {
                 gameControl.play();
             }   
