@@ -3,6 +3,7 @@ const player1Input = document.querySelector(".p1-input");
 const player2Input = document.querySelector(".p2-input");
 const output = document.querySelector(".output");
 
+
 let playerOne;
 let playerTwo;
 
@@ -11,8 +12,9 @@ const gameboard = (function() {
     const getBoard = () => initializeBoard;
     const p1DrawBoard = () => {
         let choice = parseInt(prompt("P1 Enter index"));
+        
         if (initializeBoard[choice] === "") {
-            return initializeBoard.splice(choice, 1, playerOne.symbol)
+            return initializeBoard.splice(choice, 1, playerOne.symbol);        
         } else {
             return alert("Invalid input")
         }
@@ -20,14 +22,27 @@ const gameboard = (function() {
     const p2DrawBoard = () => {
         let choice = parseInt(prompt("P2 Enter index"));
         if (initializeBoard[choice] === "") {
-            return initializeBoard.splice(choice, 1, playerTwo.symbol)
+            return initializeBoard.splice(choice, 1, playerTwo.symbol);
         } else {
             return alert("Invalid input")
         }
     };
 
+    const printBoard = () => {
+        const DOMgameboard = document.querySelectorAll(".boardfield");
+        DOMgameboard.forEach((item, index) => {
+            if (gameboard.getBoard()[index] === "X"){
+                item.innerHTML = "⛌";
+            } else if (gameboard.getBoard()[index] === "O"){
+                item.innerHTML = "○";
+            } else {
+                item.innerHTML = "";
+            }
+        });
+    };
+
     const resetBoard = () => initializeBoard = ["","","","","","","","",""];
-    return {initializeBoard, getBoard, p1DrawBoard, p2DrawBoard, resetBoard};
+    return {getBoard, p1DrawBoard, p2DrawBoard, resetBoard, printBoard};
 })();
 
 function generatePlayer(name, symbol){
@@ -65,7 +80,7 @@ const gameControl = (function(){
         } else {
             gameboard.p2DrawBoard();
         }
-        console.log(gameboard.getBoard());
+        gameboard.printBoard();
         return gameControl.winCondition();
     };
     const winCondition = () => {
@@ -128,7 +143,7 @@ const gameControl = (function(){
                 gameboard.resetBoard();
                 return alert("It's a tie!")
             } else {
-                gameControl.play();
+                //gameControl.play();
             }   
     };
 
