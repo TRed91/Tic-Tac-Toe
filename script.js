@@ -1,3 +1,11 @@
+const playBtn = document.querySelector("#play-button");
+const player1Input = document.querySelector(".p1-input");
+const player2Input = document.querySelector(".p2-input");
+const output = document.querySelector(".output");
+
+let playerOne;
+let playerTwo;
+
 const gameboard = (function() {
     let initializeBoard = ["","","","","","","","",""];
     const getBoard = () => initializeBoard;
@@ -31,10 +39,21 @@ function generatePlayer(name, symbol){
     const win = () => score++;
 
     return {name: playerName, symbol: playerSymbol, getScore, win}
-}
+} 
 
-const playerOne = generatePlayer(prompt("Player 1: Enter Name", ), "O");
-const playerTwo = generatePlayer(prompt("Player 2: Enter Name", ), "X");
+playBtn.addEventListener("click", () => {
+    if (player1Input.value !== "" && player2Input.value !== "") {
+        output.innerHTML = "";
+        playerOne = generatePlayer(player1Input.value, "O");
+        playerTwo = generatePlayer(player2Input.value, "X");
+        player1Input.disabled = true;
+        player2Input.disabled = true;
+        gameControl.play();
+    }else{
+        output.innerHTML = "Please enter player names"
+    }
+})
+
 
 const gameControl = (function(){
     const startGame = () => gameboard.drawBoard();
@@ -108,5 +127,6 @@ const gameControl = (function(){
                 gameControl.play();
             }   
     };
+
     return {startGame, play, winCondition};
 })();
