@@ -1,6 +1,7 @@
-const gameboard = {
-    fields: ["1","2","3","4","5","6","7","8","9"],
-}
+const gameboard = (function() {
+    const drawBoard = () => ["1","2","3","4","5","6","7","8","9"];
+    return {drawBoard};
+})();
 
 function generatePlayer(name, symbol){
     const playerName = name;
@@ -13,4 +14,8 @@ function generatePlayer(name, symbol){
 
 const playerOne = generatePlayer(prompt("Player 1: Enter Name", ), "O");
 const playerTwo = generatePlayer(prompt("Player 2: Enter Name", ), "X");
-   
+
+const gameControl = (function(){
+    const startGame = () => gameboard.drawBoard();
+    return {startGame};
+})();
