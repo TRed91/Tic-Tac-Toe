@@ -106,11 +106,7 @@ const gameControl = (function(){
                 }
             } else {
                 gameControl.play();
-            }
-                        
-            
-        
+            }   
     };
     return {startGame, play, winCondition};
 })();
-
