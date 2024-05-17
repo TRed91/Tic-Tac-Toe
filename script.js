@@ -3,8 +3,8 @@ let playerTwo;
 
 const gameboard = (function() {
     let initializeBoard = ["","","","","","","","",""];
-    const p1ScoreTrack = document.querySelector("#p1-score");
-    const p2ScoreTrack = document.querySelector("#p2-score");
+    const p1ScoreLabel = document.querySelector(".p1-score-label");
+    const p2ScoreLabel = document.querySelector(".p2-score-label");
     const getBoard = () => initializeBoard;
 
     const drawBoard = (input) => {
@@ -49,15 +49,15 @@ const gameboard = (function() {
     };
 
     const printScore = () => {
-            p1ScoreTrack.innerHTML = `${playerOne.getScore()}`;
-            p2ScoreTrack.innerHTML = `${playerTwo.getScore()}`;
+        p1ScoreLabel.innerHTML = `${playerOne.name} score: <span class="score" id="p1-score">${playerOne.getScore()}</span>`;
+        p2ScoreLabel.innerHTML = `${playerTwo.name} score: <span class="score" id="p2-score">${playerTwo.getScore()}</span>`;
         }
 
     const resetBoard = () => {
         gameControl.DOMgameboard.forEach(e => e.innerHTML = "");
         return initializeBoard = ["","","","","","","","",""];
     };
-    return {getBoard, drawBoard, resetBoard, printBoard};
+    return {getBoard, drawBoard, resetBoard, printBoard, printScore};
 })();
 
 function generatePlayer (name, symbol){
@@ -76,8 +76,6 @@ const gameControl = (function(){
     const DOMgameboard = document.querySelectorAll(".boardfield");
     const player1Input = document.querySelector(".p1-input");
     const player2Input = document.querySelector(".p2-input");
-    const p1ScoreLabel = document.querySelector(".p1-score-label");
-    const p2ScoreLabel = document.querySelector(".p2-score-label");
     const output = document.querySelector(".output");
     const startGame = () => {
         if (gameboard.getBoard().filter(e => e==="").length === 0){
@@ -170,8 +168,7 @@ const gameControl = (function(){
             output.innerHTML = "";
             playerOne = generatePlayer(player1Input.value, "O");
             playerTwo = generatePlayer(player2Input.value, "X");
-            p1ScoreLabel.innerHTML = `${playerOne.name} score: <span class="score" id="p1-score">${playerOne.getScore()}</span>`;
-            p2ScoreLabel.innerHTML = `${playerTwo.name} score: <span class="score" id="p2-score">${playerTwo.getScore()}</span>`;
+            gameboard.printScore();
             player1Input.disabled = true;
             player2Input.disabled = true;
             startGame();
