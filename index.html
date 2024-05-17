@@ -14,16 +14,16 @@
     </div>
     <div class="player-input-container">
         <div class="p1-input-container">
-            <label for="p1-input"><span class="circle label-symbol">○</span>Player one: </label>
+            <label for="p1-input"><span class="circle label-symbol"></span>Player one: </label>
             <input type="text" id="p1-input" class="p1-input" placeholder="Enter Name">
         </div>
         <div class="p2-input-container">
-            <label for="p2-input"><span class="cross label-symbol">⛌</span> Player Two: </label>
+            <label for="p2-input"><span class="cross label-symbol"></span> Player Two: </label>
             <input type="text" id="p2-input" class="p2-input" placeholder="Enter Name">
         </div>
     </div>
     <div class="score-board">
-        <div class="score-label p1-score-label">Player One score: <span class="score" id="p1-score">0</span></div>
+        <div class="score-label p1-score-label">Player One score: <br><span class="score" id="p1-score">0</span></div>
         <div class="gameboard">
             <div class="boardfield" arrindex="0"></div>
             <div class="boardfield" arrindex="1"></div>
@@ -35,9 +35,9 @@
             <div class="boardfield" arrindex="7"></div>
             <div class="boardfield" arrindex="8"></div>
         </div>
-        <div class="score-label p2-score-label">Player Two score: <span class="score" id="p2-score">0</span></div>
+        <div class="score-label p2-score-label">Player Two score: <br><span class="score" id="p2-score">0</span></div>
     </div>
     <button id="play-button">Play</button>
-    <div class="output"></div>
+    <div class="output" hidden></div>
 </body>
 </html>

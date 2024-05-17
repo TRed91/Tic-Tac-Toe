@@ -85,6 +85,16 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+    background-color: #c2bfb0;
+}
+
+.title {
+  background-color: orange;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0 20px 0;
+  text-shadow: 0px 0px 6px white;
+  box-shadow: 0px 3px 3px black;
 }
 
 .player-input-container {
@@ -92,28 +102,61 @@ body {
     gap: 2rem;
 }
 
+.player-input-container > div {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border: 2px solid black;
+  height: 50px;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 3px 3px 3px black;
+}
+
+input {
+  border: none;
+  background-color: #e2e2e2;
+  height: 25px;
+  font-size: 20px;
+  border-radius: 10px;
+  padding-left: 10px;
+}
+
 .player-input-container > div > label {
     position: relative;
+    font-weight: bold;
+    text-shadow: 0px 0px 3px white;
+    font-size: 20px;
 }
 
 .label-symbol {
     position: absolute;
-    font-size: 40px;
-    font-weight: bold;
-    bottom: -12px;
     left: 20px;
 }
 
 .circle {
-    font-size: 80px;
-    bottom: -30px;
+    width: 50px;
+    height: 50px;
+    bottom: -15px;
+    background: url(images/O-symbol.png);
+    background-size: contain;
+    z-index: -10;
+}
+
+.cross {
+  width: 50px;
+    height: 50px;
+    bottom: -15px;
+    background: url(images/X-symbol.png);
+    background-size: contain;
+    z-index: -10;
 }
 
 .gameboard {
     display: grid;
     flex: 1 0 auto;
-    width: 50vw;
-    height: 50vw;
+    width: 50vh;
+    height: 50vh;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
     background-color: var(--gameboard-color);
     border: 2px solid black;
@@ -122,10 +165,71 @@ body {
 
 .boardfield {
     border: 1px black solid;
+    position: relative;
+}
+
+.o {
+  background: url(images/O-symbol.png);
+  background-size: contain;
+}
+
+.x {
+  background: url(images/X-symbol.png);
+  background-size: contain;
 }
 
 .score-board {
     display: flex;
     align-items: center;
     gap: 20px;
+}
+.score-label {
+  text-align: center;
+  line-height: 5rem;
+  font-size: 1.5rem;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid black;
+  box-shadow: inset 2px 2px 3px black;
+  width: max(20vw, 240px);
+}
+
+.p1-score-label {
+  background-color: rgb(127, 127, 255);
+}
+
+.p2-score-label {
+  background-color: rgb(255, 127, 127);
+}
+
+.score {
+  font-size: 5rem;
+}
+
+button {
+  border: none;
+  background-color: green;
+  font-weight: bold;
+  font-size: 2rem;
+  padding: 10px 40px;
+  border-radius: 20px;
+  box-shadow: 3px 3px 3px black;
+  text-shadow: 0px 0px 3px white;
+}
+
+button:disabled {
+  background-color: grey;
+  box-shadow: inset 3px 3px 3px black;
+  text-shadow: none;
+}
+
+.output {
+  position: absolute;
+  top: 50vh;
+  font-size: 3rem;
+  text-shadow: 0px 0px 5px white;
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  padding: 10px 30px;
+  box-shadow: 0px 0px 10px black;
 }
