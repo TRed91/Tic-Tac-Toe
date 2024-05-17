@@ -1,22 +1,18 @@
-const playBtn = document.querySelector("#play-button");
-const player1Input = document.querySelector(".p1-input");
-const player2Input = document.querySelector(".p2-input");
-const output = document.querySelector(".output");
-
-
 let playerOne;
 let playerTwo;
 
 const gameboard = (function() {
     let initializeBoard = ["","","","","","","","",""];
     const getBoard = () => initializeBoard;
+
     const p1DrawBoard = () => {
         let choice = parseInt(prompt("P1 Enter index"));
         
         if (initializeBoard[choice] === "") {
             return initializeBoard.splice(choice, 1, playerOne.symbol);        
         } else {
-            return alert("Invalid input")
+            alert("Invalid input")
+            return "Invalid"
         }
     };
     const p2DrawBoard = () => {
@@ -24,13 +20,13 @@ const gameboard = (function() {
         if (initializeBoard[choice] === "") {
             return initializeBoard.splice(choice, 1, playerTwo.symbol);
         } else {
-            return alert("Invalid input")
+            alert("Invalid input")
+            return "Invalid"
         }
     };
 
     const printBoard = () => {
-        const DOMgameboard = document.querySelectorAll(".boardfield");
-        DOMgameboard.forEach((item, index) => {
+        gameControl.DOMgameboard.forEach((item, index) => {
             if (gameboard.getBoard()[index] === "X"){
                 item.innerHTML = "⛌";
             } else if (gameboard.getBoard()[index] === "O"){
@@ -41,11 +37,14 @@ const gameboard = (function() {
         });
     };
 
-    const resetBoard = () => initializeBoard = ["","","","","","","","",""];
+    const resetBoard = () => {
+        DOMgameboard.forEach(e => e.innerHTML = "");
+        return initializeBoard = ["","","","","","","","",""];
+    };
     return {getBoard, p1DrawBoard, p2DrawBoard, resetBoard, printBoard};
 })();
 
-function generatePlayer(name, symbol){
+function generatePlayer (name, symbol){
 
     const playerName = name;
     const playerSymbol = symbol;
@@ -56,33 +55,53 @@ function generatePlayer(name, symbol){
     return {name: playerName, symbol: playerSymbol, getScore, win}
 } 
 
-playBtn.addEventListener("click", () => {
-    if (player1Input.value !== "" && player2Input.value !== "") {
-        output.innerHTML = "";
-        playerOne = generatePlayer(player1Input.value, "O");
-        playerTwo = generatePlayer(player2Input.value, "X");
-        player1Input.disabled = true;
-        player2Input.disabled = true;
-        gameControl.play();
-    }else{
-        output.innerHTML = "Please enter player names"
-    }
-})
-
-
 const gameControl = (function(){
-    const startGame = () => gameboard.drawBoard();
+    const playBtn = document.querySelector("#play-button");
+    const DOMgameboard = document.querySelectorAll(".boardfield");
+    const player1Input = document.querySelector(".p1-input");
+    const player2Input = document.querySelector(".p2-input");
+    const output = document.querySelector(".output");
+    const startGame = () => {
+        if (gameboard.getBoard().filter(e => e==="").length === 0){
+            if (Math.random() > 0.5){
+                turn = "p1"
+            } else {
+                turn = "p2"
+            }
+        }
+        return play()
+    };
+    let turn = "p1" 
     const play = () => {
-        const countO = gameboard.getBoard().filter(e => e === "O").length;
-        const countX = gameboard.getBoard().filter(e => e === "X").length;
-        if (countO <= countX) {
+        /* const countO = gameboard.getBoard().filter(e => e === "O").length;
+        const countX = gameboard.getBoard().filter(e => e === "X").length; */
+        /* if (countO <= countX) {
             gameboard.p1DrawBoard();
         } else {
             gameboard.p2DrawBoard();
         }
+        */
+        
+        if (turn === "p1") {
+            let result = gameboard.p1DrawBoard();
+            if ( result === "Invalid"){
+                turn = "p1"
+            } else {
+                turn = "p2"
+            }
+        } else {
+            let p2Result = gameboard.p2DrawBoard();
+            if (p2Result === "Invalid"){
+                turn = "p2"
+            } else {
+                turn = "p1"
+            }
+        }
+
         gameboard.printBoard();
-        return gameControl.winCondition();
+        return winCondition();
     };
+
     const winCondition = () => {
         let board = gameboard.getBoard();
         let checkDraw = gameboard.getBoard().filter(e => e === "").length;
@@ -147,5 +166,25 @@ const gameControl = (function(){
             }   
     };
 
-    return {startGame, play, winCondition};
+    const fieldBtn = DOMgameboard.forEach(e => {
+        e.addEventListener("click", () =>{
+            return e.innerHTML
+        })
+    })
+
+    const btnPress = playBtn.addEventListener("click", () => {
+        if (player1Input.value !== "" && player2Input.value !== "") {
+            output.innerHTML = "";
+            playerOne = generatePlayer(player1Input.value, "O");
+            playerTwo = generatePlayer(player2Input.value, "X");
+            player1Input.disabled = true;
+            player2Input.disabled = true;
+            startGame();
+        }else{
+            output.innerHTML = "Please enter player names"
+        }
+    })
+
+    return {startGame, play, winCondition, DOMgameboard, turn};
 })();
+
