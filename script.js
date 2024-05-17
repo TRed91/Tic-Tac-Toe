@@ -106,21 +106,9 @@ const gameControl = (function(){
         };
 
     const getPause = () => pause;
-    const getTurn = () => turn;
-
-    const setfirstTurn = () => { 
-        if (Math.random() > 0.5){
-        turn = "p1"
-    } else {
-        turn = "p2"
-    }};
 
     const startGame = () => {
-        if (gameboard.getBoard().filter(e => e==="").length === 0){
-           setfirstTurn();
-        }
         playBtn.disabled = true;
-        return getTurn();
     };
 
     const winCondition = () => {
@@ -269,6 +257,6 @@ const gameControl = (function(){
         }
     })
 
-    return {startGame, winCondition, DOMgameboard, getPause, pauseToggle, setnewRound, output, contBtn};
+    return {winCondition, DOMgameboard, getPause, pauseToggle, setnewRound, output, contBtn};
 })();
 
