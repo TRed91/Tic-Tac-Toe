@@ -233,3 +233,8 @@ button:disabled {
   padding: 10px 30px;
   box-shadow: 0px 0px 10px black;
 }
+
+.buttons {
+  display: flex;
+  gap: 20px;
+}

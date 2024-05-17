@@ -14,7 +14,6 @@ const gameboard = (function() {
             if (initializeBoard[input] === "") {
                 initializeBoard.splice(input, 1, playerOne.symbol);
                 printBoard();
-                printScore();
                 setTimeout(() => {return gameControl.winCondition()}, 20);
             } else {
                 alert("Invalid input")
@@ -24,7 +23,6 @@ const gameboard = (function() {
             if (initializeBoard[input] === "") {
                 initializeBoard.splice(input, 1, playerTwo.symbol);
                 printBoard();
-                printScore();
                 setTimeout(() => {return gameControl.winCondition()}, 20);
                 //return gameControl.winCondition();
             } else {
@@ -54,7 +52,6 @@ const gameboard = (function() {
         }
 
     const resetBoard = () => {
-        gameControl.DOMgameboard.forEach(e => e.innerHTML = "");
         return initializeBoard = ["","","","","","","","",""];
     };
     return {getBoard, drawBoard, resetBoard, printBoard, printScore};
@@ -73,22 +70,45 @@ function generatePlayer (name, symbol){
 
 const gameControl = (function(){
     const playBtn = document.querySelector("#play-button");
+    const contBtn = document.querySelector("#continue-button");
     const DOMgameboard = document.querySelectorAll(".boardfield");
     const player1Input = document.querySelector(".p1-input");
     const player2Input = document.querySelector(".p2-input");
     const output = document.querySelector(".output");
+    let pause = true;
+    let turn = "p1";
+
+    const pauseToggle = () => {
+        if (getPause() === true) {
+            DOMgameboard.forEach(e => {
+                e.setAttribute("disabled", false)
+            });
+            pause = false;
+        } else {
+            DOMgameboard.forEach(e => {
+                e.setAttribute("disabled", true)
+            });
+            pause = true;
+        }
+        };
+
+    const getPause = () => pause;
+    const getTurn = () => turn;
+
+    const setfirstTurn = () => { 
+        if (Math.random() > 0.5){
+        turn = "p1"
+    } else {
+        turn = "p2"
+    }};
+
     const startGame = () => {
         if (gameboard.getBoard().filter(e => e==="").length === 0){
-            if (Math.random() > 0.5){
-                turn = "p1"
-            } else {
-                turn = "p2"
-            }
+           setfirstTurn();
         }
         playBtn.disabled = true;
-        return turn
+        return getTurn();
     };
-    let turn = "p1" 
 
     const winCondition = () => {
         let board = gameboard.getBoard();
@@ -98,73 +118,101 @@ const gameControl = (function(){
             (board[0] === board[4] && board[0] === board[8] && board[0] !== "")){
                 if (board[0] === "O"){
                     playerOne.win();
-                    gameboard.resetBoard();
                     output.hidden = false;
-                    return output.innerHTML = `${playerOne.name} wins!`;
+                    output.innerHTML = `${playerOne.name} wins!`;
+                    gameboard.resetBoard();
+                    pauseToggle();
+                    return contBtn.disabled = false;
                 } else {
                     playerTwo.win();
-                    gameboard.resetBoard();
                     output.hidden = false;
-                    return output.innerHTML = `${playerTwo.name} wins!`;
+                    output.innerHTML = `${playerTwo.name} wins!`;
+                    gameboard.resetBoard();
+                    pauseToggle();
+                    return contBtn.disabled = false;
                 }
             } else if ((board[1] === board[4] && board[1] === board[7] && board[1] !== "")){
                 if (board[1] === "O"){
                     playerOne.win()
-                    gameboard.resetBoard();
                     output.hidden = false;
-                    return output.innerHTML = `${playerOne.name} wins!`;
+                    output.innerHTML = `${playerOne.name} wins!`;
+                    gameboard.resetBoard();
+                    pauseToggle();
+                    return contBtn.disabled = false;
                 } else {
                     playerTwo.win();
                     output.hidden = false;
+                    output.innerHTML = `${playerTwo.name} wins!`;
                     gameboard.resetBoard();
-                    output.hidden = false;
-                    return output.innerHTML = `${playerTwo.name} wins!`;
+                    pauseToggle();
+                    return contBtn.disabled = false;
                 }
             } else if ((board[3] === board[4] && board[3] === board[5] && board[3] !== "")){
                 if (board[3] === "O"){
                     playerOne.win()
-                    gameboard.resetBoard();
                     output.hidden = false;
-                    return output.innerHTML = `${playerOne.name} wins!`;
+                    output.innerHTML = `${playerOne.name} wins!`;
+                    gameboard.resetBoard();
+                    pauseToggle();
+                    return contBtn.disabled = false;
                 } else {
                     playerTwo.win();
-                    gameboard.resetBoard();
                     output.hidden = false;
-                    return output.innerHTML = `${playerTwo.name} wins!`
+                    output.innerHTML = `${playerTwo.name} wins!`
+                    gameboard.resetBoard();
+                    pauseToggle();
+                    return contBtn.disabled = false;
                 }
             } else if ((board[2] === board[5] && board[2] === board[8] && board[2] !== "") ||
                        (board[2] === board[4] && board[2] === board[6] && board[2] !== "")){
-                        if (board[2] === "O"){
-                            playerOne.win()
-                            gameboard.resetBoard();
-                            output.hidden = false;
-                            return output.innerHTML = `${playerOne.name} wins!`;
-                        } else {
-                            playerTwo.win();
-                            gameboard.resetBoard();
-                            output.hidden = false;
-                            return output.innerHTML = `${playerTwo.name} wins!`
+                if (board[2] === "O"){
+                    playerOne.win()
+                    output.hidden = false;
+                    output.innerHTML = `${playerOne.name} wins!`;
+                    gameboard.resetBoard();
+                    pauseToggle();
+                    return contBtn.disabled = false;
+                } else {
+                    playerTwo.win();
+                    output.hidden = false;
+                    output.innerHTML = `${playerTwo.name} wins!`
+                    gameboard.resetBoard();
+                    pauseToggle();
+                    return contBtn.disabled = false;
                         }
             } else if ((board[6] === board[7] && board[6] === board[8] && board[6] !== "")){
                 if (board[6] === "O"){
                     playerOne.win()
-                    gameboard.resetBoard();
                     output.hidden = false;
-                    return output.innerHTML = `${playerOne.name} wins!`;
+                    output.innerHTML = `${playerOne.name} wins!`;
+                    gameboard.resetBoard();
+                    pauseToggle();
+                    return contBtn.disabled = false;
                 } else {
                     playerTwo.win();
-                    gameboard.resetBoard();
                     output.hidden = false;
-                    return output.innerHTML = `${playerTwo.name} wins!`;
+                    output.innerHTML = `${playerTwo.name} wins!`;
+                    gameboard.resetBoard();
+                    pauseToggle();
+                    return contBtn.disabled = false;
                 }
             } else if (checkDraw === 0){
-                gameboard.resetBoard();
                 output.hidden = false;
-                return output.innerHTML = "It's a tie.";
-            } else {
-                //gameControl.play();
-            }   
+                output.innerHTML = "It's a tie.";
+                gameboard.resetBoard();
+                pauseToggle();
+                return contBtn.disabled = false;
+            }
     };
+
+    const cont = contBtn.addEventListener("click", () => {
+        output.innerHTML = "";
+        output.hidden = true;
+        pauseToggle();
+        contBtn.disabled = true;
+        gameboard.printScore();
+        DOMgameboard.forEach(e => e.setAttribute("class", "boardfield"));
+    });
 
     const fieldBtn = DOMgameboard.forEach(e => {
             e.addEventListener("click", () =>{
@@ -172,9 +220,12 @@ const gameControl = (function(){
                     output.innerHTML = "";
                     output.hidden = true;
                 }
-                return gameboard.drawBoard(e.getAttribute("arrindex"));
+                if (e.getAttribute("disabled") === "false"){
+                    return gameboard.drawBoard(e.getAttribute("arrindex"));
+                }
+                
             })
-    })
+    });
 
     const btnPress = playBtn.addEventListener("click", () => {
         if (player1Input.value !== "" && player2Input.value !== "") {
@@ -185,6 +236,7 @@ const gameControl = (function(){
             gameboard.printScore();
             player1Input.disabled = true;
             player2Input.disabled = true;
+            pauseToggle();
             startGame();
         }else{
             output.hidden = false;
@@ -192,6 +244,6 @@ const gameControl = (function(){
         }
     })
 
-    return {startGame, winCondition, DOMgameboard};
+    return {startGame, winCondition, DOMgameboard, getPause, pauseToggle};
 })();
 
