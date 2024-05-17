@@ -5,24 +5,31 @@ const gameboard = (function() {
     let initializeBoard = ["","","","","","","","",""];
     const getBoard = () => initializeBoard;
 
-    const p1DrawBoard = () => {
-        let choice = parseInt(prompt("P1 Enter index"));
+    const drawBoard = (input) => {
+        let choice = input
+        const countO = gameboard.getBoard().filter(e => e === "O").length;
+        const countX = gameboard.getBoard().filter(e => e === "X").length;
+        if (countO <= countX) {
+            if (initializeBoard[choice] === "") {
+                initializeBoard.splice(choice, 1, playerOne.symbol);
+                printBoard();
+                return gameControl.winCondition();
+            } else {
+                alert("Invalid input")
+                return "Invalid"
+            }
+        } else {
+            if (initializeBoard[choice] === "") {
+                initializeBoard.splice(choice, 1, playerTwo.symbol);
+                printBoard();
+                return gameControl.winCondition();
+            } else {
+                alert("Invalid input")
+                return "Invalid"
+            }
+        }
         
-        if (initializeBoard[choice] === "") {
-            return initializeBoard.splice(choice, 1, playerOne.symbol);        
-        } else {
-            alert("Invalid input")
-            return "Invalid"
-        }
-    };
-    const p2DrawBoard = () => {
-        let choice = parseInt(prompt("P2 Enter index"));
-        if (initializeBoard[choice] === "") {
-            return initializeBoard.splice(choice, 1, playerTwo.symbol);
-        } else {
-            alert("Invalid input")
-            return "Invalid"
-        }
+        
     };
 
     const printBoard = () => {
@@ -38,10 +45,10 @@ const gameboard = (function() {
     };
 
     const resetBoard = () => {
-        DOMgameboard.forEach(e => e.innerHTML = "");
+        gameControl.DOMgameboard.forEach(e => e.innerHTML = "");
         return initializeBoard = ["","","","","","","","",""];
     };
-    return {getBoard, p1DrawBoard, p2DrawBoard, resetBoard, printBoard};
+    return {getBoard, drawBoard, resetBoard, printBoard};
 })();
 
 function generatePlayer (name, symbol){
@@ -69,38 +76,10 @@ const gameControl = (function(){
                 turn = "p2"
             }
         }
-        return play()
+        playBtn.disabled = true;
+        return turn
     };
     let turn = "p1" 
-    const play = () => {
-        /* const countO = gameboard.getBoard().filter(e => e === "O").length;
-        const countX = gameboard.getBoard().filter(e => e === "X").length; */
-        /* if (countO <= countX) {
-            gameboard.p1DrawBoard();
-        } else {
-            gameboard.p2DrawBoard();
-        }
-        */
-        
-        if (turn === "p1") {
-            let result = gameboard.p1DrawBoard();
-            if ( result === "Invalid"){
-                turn = "p1"
-            } else {
-                turn = "p2"
-            }
-        } else {
-            let p2Result = gameboard.p2DrawBoard();
-            if (p2Result === "Invalid"){
-                turn = "p2"
-            } else {
-                turn = "p1"
-            }
-        }
-
-        gameboard.printBoard();
-        return winCondition();
-    };
 
     const winCondition = () => {
         let board = gameboard.getBoard();
@@ -168,7 +147,7 @@ const gameControl = (function(){
 
     const fieldBtn = DOMgameboard.forEach(e => {
         e.addEventListener("click", () =>{
-            return e.innerHTML
+            return gameboard.drawBoard(e.getAttribute("arrindex"));
         })
     })
 
@@ -185,6 +164,6 @@ const gameControl = (function(){
         }
     })
 
-    return {startGame, play, winCondition, DOMgameboard, turn};
+    return {startGame, winCondition, DOMgameboard};
 })();
 
