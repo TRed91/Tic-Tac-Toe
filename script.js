@@ -6,23 +6,23 @@ const gameboard = (function() {
     const getBoard = () => initializeBoard;
 
     const drawBoard = (input) => {
-        let choice = input
         const countO = gameboard.getBoard().filter(e => e === "O").length;
         const countX = gameboard.getBoard().filter(e => e === "X").length;
         if (countO <= countX) {
-            if (initializeBoard[choice] === "") {
-                initializeBoard.splice(choice, 1, playerOne.symbol);
+            if (initializeBoard[input] === "") {
+                initializeBoard.splice(input, 1, playerOne.symbol);
                 printBoard();
-                return gameControl.winCondition();
+                setTimeout(() => {return gameControl.winCondition()}, 20);
             } else {
                 alert("Invalid input")
                 return "Invalid"
             }
         } else {
-            if (initializeBoard[choice] === "") {
-                initializeBoard.splice(choice, 1, playerTwo.symbol);
+            if (initializeBoard[input] === "") {
+                initializeBoard.splice(input, 1, playerTwo.symbol);
                 printBoard();
-                return gameControl.winCondition();
+                setTimeout(() => {return gameControl.winCondition()}, 20);
+                //return gameControl.winCondition();
             } else {
                 alert("Invalid input")
                 return "Invalid"
