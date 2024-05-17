@@ -3,6 +3,8 @@ let playerTwo;
 
 const gameboard = (function() {
     let initializeBoard = ["","","","","","","","",""];
+    const p1ScoreTrack = document.querySelector("#p1-score");
+    const p2ScoreTrack = document.querySelector("#p2-score");
     const getBoard = () => initializeBoard;
 
     const drawBoard = (input) => {
@@ -12,6 +14,7 @@ const gameboard = (function() {
             if (initializeBoard[input] === "") {
                 initializeBoard.splice(input, 1, playerOne.symbol);
                 printBoard();
+                printScore();
                 setTimeout(() => {return gameControl.winCondition()}, 20);
             } else {
                 alert("Invalid input")
@@ -21,6 +24,7 @@ const gameboard = (function() {
             if (initializeBoard[input] === "") {
                 initializeBoard.splice(input, 1, playerTwo.symbol);
                 printBoard();
+                printScore();
                 setTimeout(() => {return gameControl.winCondition()}, 20);
                 //return gameControl.winCondition();
             } else {
@@ -43,6 +47,11 @@ const gameboard = (function() {
             }
         });
     };
+
+    const printScore = () => {
+            p1ScoreTrack.innerHTML = `${playerOne.getScore()}`;
+            p2ScoreTrack.innerHTML = `${playerTwo.getScore()}`;
+        }
 
     const resetBoard = () => {
         gameControl.DOMgameboard.forEach(e => e.innerHTML = "");
@@ -67,6 +76,8 @@ const gameControl = (function(){
     const DOMgameboard = document.querySelectorAll(".boardfield");
     const player1Input = document.querySelector(".p1-input");
     const player2Input = document.querySelector(".p2-input");
+    const p1ScoreLabel = document.querySelector(".p1-score-label");
+    const p2ScoreLabel = document.querySelector(".p2-score-label");
     const output = document.querySelector(".output");
     const startGame = () => {
         if (gameboard.getBoard().filter(e => e==="").length === 0){
@@ -90,65 +101,68 @@ const gameControl = (function(){
                 if (board[0] === "O"){
                     playerOne.win();
                     gameboard.resetBoard();
-                    return alert(`${playerOne.name} wins!`);
+                    return output.innerHTML = `${playerOne.name} wins!`;
                 } else {
                     playerTwo.win();
                     gameboard.resetBoard();
-                    return alert(`${playerTwo.name} wins!`);
+                    return output.innerHTML = `${playerTwo.name} wins!`;
                 }
             } else if ((board[1] === board[4] && board[1] === board[7] && board[1] !== "")){
                 if (board[1] === "O"){
                     playerOne.win()
                     gameboard.resetBoard();
-                    return alert(`${playerOne.name} wins!`);
+                    return output.innerHTML = `${playerOne.name} wins!`;
                 } else {
                     playerTwo.win();
                     gameboard.resetBoard();
-                    return alert(`${playerTwo.name} wins!`);
+                    return output.innerHTML = `${playerTwo.name} wins!`;
                 }
             } else if ((board[3] === board[4] && board[3] === board[5] && board[3] !== "")){
                 if (board[3] === "O"){
                     playerOne.win()
                     gameboard.resetBoard();
-                    return alert(`${playerOne.name} wins!`);
+                    return output.innerHTML = `${playerOne.name} wins!`;
                 } else {
                     playerTwo.win();
                     gameboard.resetBoard();
-                    return alert(`${playerTwo.name} wins!`);
+                    return output.innerHTML = `${playerTwo.name} wins!`
                 }
             } else if ((board[2] === board[5] && board[2] === board[8] && board[2] !== "") ||
                        (board[2] === board[4] && board[2] === board[6] && board[2] !== "")){
                         if (board[2] === "O"){
                             playerOne.win()
                             gameboard.resetBoard();
-                            return alert(`${playerOne.name} wins!`);
+                            return output.innerHTML = `${playerOne.name} wins!`;
                         } else {
                             playerTwo.win();
                             gameboard.resetBoard();
-                            return alert(`${playerTwo.name} wins!`);
+                            return output.innerHTML = `${playerTwo.name} wins!`
                         }
             } else if ((board[6] === board[7] && board[6] === board[8] && board[6] !== "")){
                 if (board[6] === "O"){
                     playerOne.win()
                     gameboard.resetBoard();
-                    return alert(`${playerOne.name} wins!`);
+                    return output.innerHTML = `${playerOne.name} wins!`;
                 } else {
                     playerTwo.win();
                     gameboard.resetBoard();
-                    return alert(`${playerTwo.name} wins!`);
+                    return output.innerHTML = `${playerTwo.name} wins!`;
                 }
             } else if (checkDraw === 0){
                 gameboard.resetBoard();
-                return alert("It's a tie!")
+                return output.innerHTML = "It's a tie.";
             } else {
                 //gameControl.play();
             }   
     };
 
     const fieldBtn = DOMgameboard.forEach(e => {
-        e.addEventListener("click", () =>{
-            return gameboard.drawBoard(e.getAttribute("arrindex"));
-        })
+            e.addEventListener("click", () =>{
+                if (output.innerHTML !== "") {
+                    output.innerHTML = "";
+                }
+                return gameboard.drawBoard(e.getAttribute("arrindex"));
+            })
     })
 
     const btnPress = playBtn.addEventListener("click", () => {
@@ -156,6 +170,8 @@ const gameControl = (function(){
             output.innerHTML = "";
             playerOne = generatePlayer(player1Input.value, "O");
             playerTwo = generatePlayer(player2Input.value, "X");
+            p1ScoreLabel.innerHTML = `${playerOne.name} score: <span class="score" id="p1-score">${playerOne.getScore()}</span>`;
+            p2ScoreLabel.innerHTML = `${playerTwo.name} score: <span class="score" id="p2-score">${playerTwo.getScore()}</span>`;
             player1Input.disabled = true;
             player2Input.disabled = true;
             startGame();

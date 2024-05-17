@@ -111,6 +111,7 @@ body {
 
 .gameboard {
     display: grid;
+    flex: 1 0 auto;
     width: 50vw;
     height: 50vw;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
@@ -121,4 +122,10 @@ body {
 
 .boardfield {
     border: 1px black solid;
+}
+
+.score-board {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
