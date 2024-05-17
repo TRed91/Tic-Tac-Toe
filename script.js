@@ -16,7 +16,11 @@ const gameboard = (function() {
                 printBoard();
                 setTimeout(() => {return gameControl.winCondition()}, 20);
             } else {
-                alert("Invalid input")
+                gameControl.output.hidden = false;
+                gameControl.output.innerHTML = "Field already taken";
+                gameControl.pauseToggle();
+                gameControl.setnewRound(false);
+                gameControl.contBtn.disabled = false;
                 return "Invalid"
             }
         } else {
@@ -26,7 +30,11 @@ const gameboard = (function() {
                 setTimeout(() => {return gameControl.winCondition()}, 20);
                 //return gameControl.winCondition();
             } else {
-                alert("Invalid input")
+                gameControl.output.hidden = false;
+                gameControl.output.innerHTML = "Field already taken";
+                gameControl.pauseToggle();
+                gameControl.setnewRound(false);
+                gameControl.contBtn.disabled = false;
                 return "Invalid"
             }
         }
@@ -77,6 +85,11 @@ const gameControl = (function(){
     const output = document.querySelector(".output");
     let pause = true;
     let turn = "p1";
+    let newRound = false;
+
+    const getnewRound = () => newRound;
+
+    const setnewRound = (bool) => newRound = bool;
 
     const pauseToggle = () => {
         if (getPause() === true) {
@@ -122,6 +135,7 @@ const gameControl = (function(){
                     output.innerHTML = `${playerOne.name} wins!`;
                     gameboard.resetBoard();
                     pauseToggle();
+                    setnewRound(true);
                     return contBtn.disabled = false;
                 } else {
                     playerTwo.win();
@@ -129,6 +143,7 @@ const gameControl = (function(){
                     output.innerHTML = `${playerTwo.name} wins!`;
                     gameboard.resetBoard();
                     pauseToggle();
+                    setnewRound(true);
                     return contBtn.disabled = false;
                 }
             } else if ((board[1] === board[4] && board[1] === board[7] && board[1] !== "")){
@@ -138,6 +153,7 @@ const gameControl = (function(){
                     output.innerHTML = `${playerOne.name} wins!`;
                     gameboard.resetBoard();
                     pauseToggle();
+                    setnewRound(true);
                     return contBtn.disabled = false;
                 } else {
                     playerTwo.win();
@@ -145,6 +161,7 @@ const gameControl = (function(){
                     output.innerHTML = `${playerTwo.name} wins!`;
                     gameboard.resetBoard();
                     pauseToggle();
+                    setnewRound(true);
                     return contBtn.disabled = false;
                 }
             } else if ((board[3] === board[4] && board[3] === board[5] && board[3] !== "")){
@@ -154,6 +171,7 @@ const gameControl = (function(){
                     output.innerHTML = `${playerOne.name} wins!`;
                     gameboard.resetBoard();
                     pauseToggle();
+                    setnewRound(true);
                     return contBtn.disabled = false;
                 } else {
                     playerTwo.win();
@@ -161,6 +179,7 @@ const gameControl = (function(){
                     output.innerHTML = `${playerTwo.name} wins!`
                     gameboard.resetBoard();
                     pauseToggle();
+                    setnewRound(true);
                     return contBtn.disabled = false;
                 }
             } else if ((board[2] === board[5] && board[2] === board[8] && board[2] !== "") ||
@@ -171,6 +190,7 @@ const gameControl = (function(){
                     output.innerHTML = `${playerOne.name} wins!`;
                     gameboard.resetBoard();
                     pauseToggle();
+                    setnewRound(true);
                     return contBtn.disabled = false;
                 } else {
                     playerTwo.win();
@@ -178,6 +198,7 @@ const gameControl = (function(){
                     output.innerHTML = `${playerTwo.name} wins!`
                     gameboard.resetBoard();
                     pauseToggle();
+                    setnewRound(true);
                     return contBtn.disabled = false;
                         }
             } else if ((board[6] === board[7] && board[6] === board[8] && board[6] !== "")){
@@ -187,6 +208,7 @@ const gameControl = (function(){
                     output.innerHTML = `${playerOne.name} wins!`;
                     gameboard.resetBoard();
                     pauseToggle();
+                    setnewRound(true);
                     return contBtn.disabled = false;
                 } else {
                     playerTwo.win();
@@ -194,6 +216,7 @@ const gameControl = (function(){
                     output.innerHTML = `${playerTwo.name} wins!`;
                     gameboard.resetBoard();
                     pauseToggle();
+                    setnewRound(true);
                     return contBtn.disabled = false;
                 }
             } else if (checkDraw === 0){
@@ -201,6 +224,7 @@ const gameControl = (function(){
                 output.innerHTML = "It's a tie.";
                 gameboard.resetBoard();
                 pauseToggle();
+                setnewRound(true);
                 return contBtn.disabled = false;
             }
     };
@@ -209,22 +233,23 @@ const gameControl = (function(){
         output.innerHTML = "";
         output.hidden = true;
         pauseToggle();
+        if (getnewRound() === true) {
+            gameboard.printScore();
+            DOMgameboard.forEach(e => e.setAttribute("class", "boardfield"));
+        }
         contBtn.disabled = true;
-        gameboard.printScore();
-        DOMgameboard.forEach(e => e.setAttribute("class", "boardfield"));
     });
 
     const fieldBtn = DOMgameboard.forEach(e => {
             e.addEventListener("click", () =>{
+                if (e.getAttribute("disabled") === "false"){
                 if (output.innerHTML !== "") {
                     output.innerHTML = "";
                     output.hidden = true;
                 }
-                if (e.getAttribute("disabled") === "false"){
-                    return gameboard.drawBoard(e.getAttribute("arrindex"));
-                }
-                
-            })
+                return gameboard.drawBoard(e.getAttribute("arrindex"));
+            }   
+        })
     });
 
     const btnPress = playBtn.addEventListener("click", () => {
@@ -244,6 +269,6 @@ const gameControl = (function(){
         }
     })
 
-    return {startGame, winCondition, DOMgameboard, getPause, pauseToggle};
+    return {startGame, winCondition, DOMgameboard, getPause, pauseToggle, setnewRound, output, contBtn};
 })();
 
